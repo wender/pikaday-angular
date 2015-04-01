@@ -35,7 +35,7 @@
 
       restrict: 'A',
       scope: {
-        pikaday: '=', onSelect: '&', onOpen: '&', onClose: '&', onDraw: '&', disableDayFn: '&'
+        pikaday: '=', onSelect: '&', onOpen: '&', onClose: '&', onDraw: '&', disableDayFn: '&', maxDate: '=', minDate: '='
       },
       link: function (scope, elem, attrs) {
 
@@ -112,7 +112,7 @@
             case "maxDate":
             case "defaultDate":
 
-              config[attr] = new Date(value);
+              config[attr] = new Date(scope[attr] || value);
               break;
 
             // Elements
