@@ -35,7 +35,7 @@
 
       restrict: 'A',
       scope: {
-        pikaday: '=', onSelect: '&', onOpen: '&', onClose: '&', onDraw: '&', disableDayFn: '&', maxDate: '=', minDate: '='
+        pikaday: '=', onSelect: '&', onOpen: '&', onClose: '&', onDraw: '&', disableDayFn: '&', minDate: '=', maxDate: '='
       },
       link: function (scope, elem, attrs) {
 
@@ -54,7 +54,6 @@
         });
 
         // Decorate/Overide config with inline attributes
-
         angular.forEach(attrs.$attr, function (dashAttr) {
           var attr = attrs.$normalize(dashAttr); // normalize = ToCamelCase()
           applyConfig(attr, attrs[attr]);
@@ -110,16 +109,8 @@
 
             case "minDate":
             case "maxDate":
-              config[attr] = function (date) {
-                setTimeout(function(){
-                  scope.$apply();
-                });
-                return scope[attr]({ pikaday: this, date: date });
-              };
-              break;
             case "defaultDate":
-
-              config[attr] = new Date(value);
+              config[attr] = new Date(scope[attr] || value);
               break;
 
             // Elements
@@ -138,6 +129,18 @@
 
           }
         }
+
+        // Watching model changes
+        scope.$watch('minDate',function(n){
+          if(n){
+            scope.pikaday.setMinDate(n);
+          }
+        });
+        scope.$watch('maxDate',function(n){
+          if(n){
+            scope.pikaday.setMaxDate(n);
+          }
+        });
 
         // instantiate pikaday with config, bind to scope, add destroy event callback
 
