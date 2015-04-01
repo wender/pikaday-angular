@@ -110,9 +110,16 @@
 
             case "minDate":
             case "maxDate":
+              config[attr] = function (date) {
+                setTimeout(function(){
+                  scope.$apply();
+                });
+                return scope[attr]({ pikaday: this, date: date });
+              };
+              break;
             case "defaultDate":
 
-              config[attr] = new Date(scope[attr] || value);
+              config[attr] = new Date(value);
               break;
 
             // Elements
